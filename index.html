@@ -93,6 +93,8 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}.top{position:st
 <script>
 "use strict";
 
+if(typeof pdfjsLib!=="undefined") pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
 /* Medicine Passport AI - stable single-file version */
 const KEY = "mpai_final_v2";
 const $ = id => document.getElementById(id);
@@ -166,8 +168,31 @@ function go(id,btn){
   const target=$(id); if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
   document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active")); if(btn)btn.classList.add("active");
 }
-function theme(){
-  document.body.dataset.dark=document.body.dataset.dark==="1"?"0":"1";
-  if(document.body.dataset.dark==="1"){
-    document.documentElement.style.setProperty("--bg","#101919");document.documentElement.style.setProperty("--card","#172222");
-    document.documentElement.style.setProperty("--text","#edfafa");document.documentElement.style.setProperty("--muted","#a9bbbb");document.documentElement.style.
+function applyTheme(){
+  const dark=localStorage.getItem("mpai_dark")==="1";
+  document.body.dataset.dark=dark?"1":"0";
+  if(dark){
+     document.documentElement.style.setProperty("--bg","#101919");
+ document.documentElement.style.setProperty("--text","#edfafa");
+ document.documentElement.style.setProperty("--muted","#a9bbbb");
+ document.documentElement.style.setProperty("--line","#304242"); 
+  }
+                                  }
+  function saveProfile(){
+  state.profile={
+    name:el.pName.value.trim(),
+    dob:el.pDob.value,
+    blood:el.pBlood.value,
+    phone:el.pPhone.value.trim(),
+    allergy:el.pAllergy.value.trim(),
+    conditions:el.pConditions.value.trim(),
+    photo:state.profile.photo||""
+  };
+
+  if(saveData()){
+    el.pStatus.textContent="Profile saved successfully.";
+    setTimeout(function(){
+      el.pStatus.textContent="";
+    },2000);
+  }
+  }
