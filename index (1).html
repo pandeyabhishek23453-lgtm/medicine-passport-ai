@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b7a75">
+<title>Medicine Passport AI</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style>
+:root{--bg:#f4f8f8;--card:#fff;--text:#102a2a;--muted:#657979;--p:#0b7a75;--p2:#075e5a;--line:#d9e7e5;--danger:#b42318;--warn:#8a5200;--ok:#187a45;--shadow:0 10px 30px rgba(16,42,42,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,system-ui,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.top{position:sticky;top:0;z-index:20;background:#ffffffee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.topin{max-width:1200px;margin:auto;padding:11px 15px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;gap:10px;align-items:center;font-weight:800}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#0b7a75,#164e63);color:#fff;display:grid;place-items:center;font-size:25px}.brand small{display:block;color:var(--muted);font-weight:500;margin-top:2px}.layout{max-width:1200px;margin:auto;padding:16px;display:grid;grid-template-columns:235px 1fr;gap:16px}.side{position:sticky;top:75px;height:max-content;background:var(--card);border:1px solid var(--line);border-radius:17px;padding:9px;box-shadow:var(--shadow)}.nav{width:100%;border:0;background:transparent;text-align:left;padding:10px;border-radius:9px;color:var(--text);margin:2px 0}.nav:hover,.nav.active{background:#eaf6f5;color:var(--p);font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:var(--shadow);margin-bottom:15px}.hero{background:linear-gradient(135deg,#0b7a75,#164e63);color:#fff;border-radius:20px;padding:24px;margin-bottom:15px}.hero h1{margin:0 0 7px;font-size:29px}.hero p{margin:0;opacity:.9}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.full{grid-column:1/-1}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{margin:0 0 11px}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid #cbdcda;border-radius:10px;padding:10px 11px;background:#fff;color:var(--text)}textarea{min-height:95px;resize:vertical}.btn{border:0;border-radius:10px;padding:10px 13px;background:#e8f0ef;color:var(--text);font-weight:700}.primary{background:var(--p);color:#fff}.danger{background:#ffebeb;color:var(--danger)}.small{font-size:12px;padding:7px 9px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.muted{color:var(--muted);font-size:13px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.stat{border:1px solid var(--line);border-radius:12px;padding:13px}.stat b{display:block;font-size:23px}.search{display:flex;gap:8px}.search input{flex:1}.record{border:1px solid var(--line);border-radius:12px;padding:13px;margin-top:9px;background:#fbfefe}.recordtop{display:flex;justify-content:space-between;gap:9px}.tags{display:flex;gap:5px;flex-wrap:wrap}.tag{font-size:11px;background:#e7f5f3;color:var(--p);padding:4px 7px;border-radius:99px}.box{padding:11px;border-radius:10px;margin-top:9px;line-height:1.5;font-size:14px}.info{background:#edf8f7;border:1px solid #c8e9e6}.warn{background:#fff7e8;border:1px solid #f4d9a7;color:var(--warn)}.ok{background:#edf9f1;border:1px solid #c7ead3;color:var(--ok)}.bad{background:#fff0f0;border:1px solid #f1c1c1;color:var(--danger)}.empty{text-align:center;padding:18px;border:1px dashed var(--line);border-radius:11px;color:var(--muted)}.photo{width:115px;height:115px;border-radius:18px;object-fit:cover;border:2px solid var(--line);background:#eef7f6;display:block}.profilehead{display:flex;gap:15px;align-items:center;margin-bottom:14px}.chat{height:390px;border:1px solid var(--line);border-radius:13px;display:flex;flex-direction:column;background:#fbfefe}.messages{flex:1;overflow:auto;padding:12px}.bubble{max-width:86%;padding:10px 12px;border-radius:13px;margin:6px 0;line-height:1.45;font-size:14px}.ai{background:#eaf6f5}.user{background:#0b7a75;color:white;margin-left:auto}.chatbar{display:flex;gap:7px;padding:9px;border-top:1px solid var(--line)}.chatbar input{flex:1}.reader{border:2px dashed #b8d1ce;border-radius:14px;padding:18px;text-align:center}.progress{height:7px;background:#e5eeee;border-radius:99px;overflow:hidden;margin-top:9px}.progress div{height:100%;width:0;background:var(--p)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}.emergency{background:#1d2939;color:#fff;border-radius:15px;padding:17px}.big{font-size:25px;font-weight:800}.hidden{display:none !important}.bottom{display:none}footer{text-align:center;color:var(--muted);padding:15px;font-size:12px}
+@media(max-width:850px){.layout{display:block;padding:11px 9px 75px}.side{display:none}.grid{grid-template-columns:1fr}.full{grid-column:auto}.row{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.hero{padding:19px}.hero h1{font-size:24px}.bottom{position:fixed;display:flex;bottom:0;left:0;right:0;z-index:30;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:6px}.bottom button{border:0;background:transparent;font-size:10px;color:var(--muted)}.bottom b{display:block;font-size:17px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topin"><div class="brand"><div class="logo">+</div><div>Medicine Passport AI<small>Smart health document companion</small></div></div><button class="btn" data-action="theme">🌙</button></div></header>
+<div class="layout">
+<aside class="side">
+<button class="nav active" data-go="dashboard">🏠 Dashboard</button>
+<button class="nav" data-go="profile">👤 Patient Profile</button>
+<button class="nav" data-go="medicines">🔎 Search Medicine</button>
+<button class="nav" data-go="global">🌍 Global Drug Info</button>
+<button class="nav" data-go="myMeds">💊 My Medicines</button>
+<button class="nav" data-go="interactions">⚠️ Interactions & Allergies</button>
+<button class="nav" data-go="schedule">⏰ Schedule</button>
+<button class="nav" data-go="ai">🤖 Ask AI</button>
+<button class="nav" data-go="reader">📄 Prescription / Report</button>
+<button class="nav" data-go="passport">📋 Medical Passport</button>
+<button class="nav" data-go="emergency">🆘 Emergency Card</button>
+<button class="nav" data-go="backup">🔐 Privacy & Backup</button>
+<div class="box info">Developer: <b>Anuj Pandey</b></div>
+</aside>
+<main>
+<section class="hero" id="dashboard"><h1>Welcome to your Medical Passport</h1><p>Medicines, prescriptions, reports, reminders and safety information — in one place.</p></section>
+<section class="card">
+<h2>📊 Dashboard</h2>
+<div class="stats"><div class="stat"><b id="sM">0</b><span class="muted">Medicines</span></div><div class="stat"><b id="sA">0</b><span class="muted">Allergies</span></div><div class="stat"><b id="sD">0</b><span class="muted">Documents</span></div><div class="stat"><b id="sT">0%</b><span class="muted">Today's adherence</span></div></div>
+<div id="dashMsg" class="box info">Add your patient profile to start.</div>
+</section>
+
+<div class="grid">
+<section class="card" id="profile">
+<h2>👤 Patient Profile</h2>
+<div class="profilehead"><img id="pPhoto" class="photo" alt="Patient photo"><div><b id="photoLabel">No photo selected</b><div class="muted">Photo stays in this browser's local storage.</div></div></div>
+<div class="actions"><label class="btn">📷 Choose photo<input id="photoInput" class="hidden" type="file" accept="image/*"></label><button class="btn danger" data-action="removePhoto">Remove photo</button></div>
+<div class="row"><div class="field"><label>Full name</label><input id="pName" placeholder="Patient name"></div><div class="field"><label>Date of birth</label><input id="pDob" type="date"></div><div class="field"><label>Blood group</label><select id="pBlood"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div><div class="field"><label>Emergency phone</label><input id="pPhone" placeholder="+91..."></div></div>
+<div class="field"><label>Allergies (comma separated)</label><textarea id="pAllergy" placeholder="Penicillin, ibuprofen..."></textarea></div>
+<div class="field"><label>Conditions / important notes</label><textarea id="pConditions" placeholder="Optional notes to discuss with your clinician"></textarea></div>
+<button class="btn primary" data-action="saveProfile">Save profile</button><div id="pStatus" class="muted" style="margin-top:8px"></div>
+</section>
+
+<section class="card" id="medicines">
+<h2>🔎 Medicine Search</h2><div class="search"><input id="medQ" placeholder="Try paracetamol, ibuprofen, metformin"><button class="btn primary" data-action="localSearch">Search</button></div>
+<div id="medOut" style="margin-top:10px"><div class="empty">Search a medicine.</div></div>
+</section>
+
+<section class="card full" id="global">
+<h2>🌍 Global Drug Intelligence</h2><p class="muted">Uses RxNorm for drug identification and, when available, the U.S. FDA openFDA label service for educational label information. Internet is required for these online lookups.</p>
+<div class="search"><input id="globalQ" placeholder="Generic, brand or ingredient — e.g. amoxicillin, Augmentin"><button class="btn primary" data-action="globalSearch">Search</button></div>
+<div id="globalOut" style="margin-top:10px"><div class="empty">Search to identify a medicine.</div></div>
+</section>
+
+<section class="card full" id="myMeds">
+<h2>💊 My Medicines</h2><div class="row"><div class="field"><label>Medicine name</label><input id="mName" placeholder="Metformin"></div><div class="field"><label>Strength / dose</label><input id="mDose" placeholder="500 mg"></div><div class="field"><label>Frequency</label><input id="mFreq" placeholder="Twice daily"></div><div class="field"><label>Times</label><input id="mTimes" placeholder="09:00, 21:00"></div></div>
+<div class="field"><label>Duration / notes</label><textarea id="mNotes" placeholder="30 days; after meals; as prescribed..."></textarea></div><button class="btn primary" data-action="addMed">+ Add medicine</button><div id="medList"></div>
+</section>
+
+<section class="card" id="interactions"><h2>⚠️ Interactions & Allergies</h2><div id="intOut"></div></section>
+<section class="card" id="schedule"><h2>⏰ Today's Schedule</h2><div class="muted">Mark a dose taken only after you actually take it.</div><div id="scheduleOut"></div></section>
+
+<section class="card full" id="ai">
+<h2>🤖 Ask AI</h2><div class="box warn">This single-file version has a local safety assistant. It does not diagnose disease or replace a clinician. A true cloud AI assistant requires a secure backend; never put an AI secret key in public GitHub HTML.</div>
+<div class="chat"><div class="messages" id="msgs"><div class="bubble ai">Hi! Ask about your saved medicines, interactions, or uploaded report text.</div></div><div class="chatbar"><input id="aiQ" placeholder="Ask something..."><button class="btn primary" data-action="ask">Send</button></div></div>
+</section>
+
+<section class="card full" id="reader">
+<h2>📄 Prescription & Medical Report Reader</h2><p class="muted">Supports image OCR, PDF text extraction and TXT. Clear printed text is more reliable than handwriting. Verify every extracted dose against the original.</p>
+<div class="reader"><input id="file" type="file" accept="image/*,.pdf,.txt"><div id="rStatus" class="muted" style="margin-top:8px">No document selected.</div><div class="progress"><div id="prog"></div></div></div>
+<div class="field" style="margin-top:10px"><label>Extracted / pasted text</label><textarea id="rText" style="min-height:210px"></textarea></div><div class="actions"><button class="btn primary" data-action="analyze">Analyze</button><button class="btn" data-action="clearReport">Clear</button></div><div id="rOut"></div>
+</section>
+
+<section class="card" id="passport"><h2>📋 Medical Passport</h2><div id="passportOut"></div><button class="btn primary" data-print="passportOut|Medical Passport">Print / Save PDF</button></section>
+<section class="card" id="emergency"><h2>🆘 Emergency Card</h2><div class="emergency" id="emergencyOut"></div><button class="btn primary" data-print="emergencyOut|Emergency Card">Print emergency card</button></section>
+
+<section class="card full" id="backup"><h2>🔐 Privacy & Backup</h2><p class="muted">Data is stored locally in this browser. This is not encrypted clinical storage.</p><div class="actions"><button class="btn primary" data-action="exportData">Export backup</button><label class="btn">Import backup<input id="import" class="hidden" type="file" accept=".json"></label><button class="btn danger" data-action="wipe">Delete all local data</button></div><div class="box warn">Do not put private API keys or sensitive credentials into this public HTML file.</div></section>
+</div>
+<footer>Medicine Passport AI • Developer: Anuj Pandey • Educational safety companion — not a substitute for professional medical care.</footer>
+</main></div>
+<nav class="bottom"><button onclick="go('dashboard')"><b>🏠</b>Home</button><button onclick="go('medicines')"><b>🔎</b>Search</button><button onclick="go('global')"><b>🌍</b>Drugs</button><button onclick="go('myMeds')"><b>💊</b>Meds</button><button onclick="go('ai')"><b>🤖</b>AI</button><button onclick="go('reader')"><b>📄</b>Reader</button></nav>
+
+<script>
+"use strict";
+
+/* Medicine Passport AI - stable single-file version */
+const KEY = "mpai_final_v2";
+const $ = id => document.getElementById(id);
+
+const el = {
+  pName:$('pName'), pDob:$('pDob'), pBlood:$('pBlood'), pPhone:$('pPhone'),
+  pAllergy:$('pAllergy'), pConditions:$('pConditions'), pPhoto:$('pPhoto'),
+  photoInput:$('photoInput'), photoLabel:$('photoLabel'), pStatus:$('pStatus'),
+  medQ:$('medQ'), medOut:$('medOut'), globalQ:$('globalQ'), globalOut:$('globalOut'),
+  mName:$('mName'), mDose:$('mDose'), mFreq:$('mFreq'), mTimes:$('mTimes'), mNotes:$('mNotes'),
+  medList:$('medList'), intOut:$('intOut'), scheduleOut:$('scheduleOut'),
+  aiQ:$('aiQ'), msgs:$('msgs'), file:$('file'), rStatus:$('rStatus'), prog:$('prog'),
+  rText:$('rText'), rOut:$('rOut'), importInput:$('import'),
+  sM:$('sM'), sA:$('sA'), sD:$('sD'), sT:$('sT'), dashMsg:$('dashMsg'),
+  passportOut:$('passportOut'), emergencyOut:$('emergencyOut')
+};
+
+function defaultState(){return {profile:{},meds:[],docs:[],taken:{}}}
+let state;
+try{
+  let raw=localStorage.getItem(KEY);
+  /* Migrate data from the previous version, then remove the old key so a large old photo cannot fill storage. */
+  if(!raw){
+    const oldRaw=localStorage.getItem("mpai_final_v1");
+    if(oldRaw){
+      try{
+        const old=JSON.parse(oldRaw);
+        if(old && typeof old==="object") state=old;
+      }catch(_){}
+    }
+  }
+  if(!state){state=raw?JSON.parse(raw):defaultState()}
+  if(!state || typeof state!=="object") state=defaultState();
+  state.profile=state.profile||{}; state.meds=Array.isArray(state.meds)?state.meds:[];
+  state.docs=Array.isArray(state.docs)?state.docs:[]; state.taken=state.taken||{};
+  if(state.profile.photo && String(state.profile.photo).length>700000) state.profile.photo="";
+  if(localStorage.getItem("mpai_final_v1")) localStorage.removeItem("mpai_final_v1");
+  try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){if(state.profile.photo){state.profile.photo="";try{localStorage.setItem(KEY,JSON.stringify(state))}catch(__){}}}
+}catch(e){state=defaultState()}
+
+const DB={
+paracetamol:{aliases:["acetaminophen"],purpose:"Pain and fever relief.",effects:["Nausea or stomach discomfort","Allergic reactions are uncommon"],warnings:["Excessive total intake can cause serious liver injury","Check combination products for duplicate acetaminophen/paracetamol"],urgent:["Suspected overdose","Severe allergic reaction"]},
+ibuprofen:{aliases:[],purpose:"NSAID used for pain, inflammation and fever.",effects:["Stomach upset","Heartburn","Nausea"],warnings:["May increase stomach bleeding risk","Kidney problems and fluid retention can occur in susceptible people"],urgent:["Vomiting blood","Black stools","Severe breathing difficulty"]},
+aspirin:{aliases:["acetylsalicylic acid"],purpose:"Used for some pain/inflammation and, under medical direction, cardiovascular protection.",effects:["Stomach irritation","Easy bruising or bleeding"],warnings:["Can increase bleeding risk","Do not assume daily aspirin is appropriate without professional advice"],urgent:["Major bleeding","Vomiting blood"]},
+amoxicillin:{aliases:[],purpose:"Penicillin-class antibiotic for certain bacterial infections.",effects:["Nausea","Diarrhea","Abdominal discomfort"],warnings:["Use only as prescribed","Penicillin allergy can cause serious reactions"],urgent:["Face/lip/tongue swelling","Difficulty breathing","Severe rash"]},
+cetirizine:{aliases:[],purpose:"Antihistamine commonly used for allergy symptoms.",effects:["Sleepiness","Dry mouth","Fatigue"],warnings:["May cause drowsiness"],urgent:["Severe allergic reaction"]},
+metformin:{aliases:[],purpose:"Helps control blood glucose in type 2 diabetes.",effects:["Nausea","Diarrhea","Stomach discomfort"],warnings:["Follow prescribed instructions","Kidney function can be important"],urgent:["Severe weakness","Breathing difficulty"]},
+omeprazole:{aliases:[],purpose:"Reduces stomach acid.",effects:["Headache","Nausea","Abdominal discomfort"],warnings:["Long-term use should be reviewed when appropriate"],urgent:["Severe allergic reaction"]},
+azithromycin:{aliases:[],purpose:"Macrolide antibiotic for certain bacterial infections.",effects:["Nausea","Diarrhea","Abdominal discomfort"],warnings:["Use only as prescribed","Some medicines can interact"],urgent:["Severe allergic reaction","Fainting"]},
+diclofenac:{aliases:[],purpose:"NSAID used for pain and inflammation.",effects:["Stomach irritation","Nausea","Indigestion"],warnings:["Can increase stomach bleeding and cardiovascular risks in some people"],urgent:["Vomiting blood","Black stools","Chest pain"]},
+atorvastatin:{aliases:[],purpose:"Statin medicine used to lower cholesterol and cardiovascular risk.",effects:["Muscle aches","Digestive symptoms"],warnings:["Report unexplained severe muscle pain or weakness"],urgent:["Severe muscle pain/weakness","Dark urine"]}
+};
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function save(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    render();
+    return true;
+  }catch(e){
+    /* If a previously selected full-size photo filled localStorage, recover gracefully. */
+    if(state.profile && state.profile.photo){
+      state.profile.photo="";
+      try{localStorage.setItem(KEY,JSON.stringify(state));render();alert("Data saved, but the photo was too large for browser storage. Please choose a smaller photo.");return true}catch(_){ }
+    }
+    alert("Browser storage is full. Please use Export Backup, then clear old site data and try again.");
+    return false;
+  }
+}
+function go(id,btn){
+  const target=$(id); if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+  <script>
+"use strict";
+
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+function saveData(){
+  try{
+    localStorage.setItem(KEY,JSON.stringify(state));
+    render();
+    return true;
+  }catch(e){
+    if(state.profile && state.profile.photo){
+      state.profile.photo="";
+      try{
+        localStorage.setItem(KEY,JSON.stringify(state));
+        render();
+        alert("Profile save ho gaya, lekin photo browser storage ke liye bahut badi thi.");
+        return true;
+      }catch(_){}
+    }
+    alert("Browser storage full hai. Backup export karke purana data clear karein.");
+    return false;
+  }
+}
+
+function go(id,btn){
+  const target=document.getElementById(id);
+  if(target){
+    target.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  document.querySelectorAll(".nav").forEach(function(x){
+    x.classList.remove("active");
+  });
+  if(btn) btn.classList.add("active");
+}
+
+function theme(){
+  const dark=document.body.dataset.dark==="1";
+  if(dark){
+    document.body.dataset.dark="0";
+    document.documentElement.style.setProperty("--bg","#f4f8f8");
+    document.documentElement.style.setProperty("--card","#fff");
+    document.documentElement.style.setProperty("--text","#102a2a");
+    document.documentElement.style.setProperty("--muted","#657979");
+    document.documentElement.style.setProperty("--line","#d9e7e5");
+  }else{
+    document.body.dataset.dark="1";
+    document.documentElement.style.setProperty("--bg","#101919");
+    document.documentElement.style.setProperty("--card","#172222");
+    document.documentElement.style.setProperty("--text","#edfafa");
+    document.documentElement.style.setProperty("--muted","#a9bbbb");
+    document.documentElement.style.setProperty("--line","#304242");
+  }
+}
+
+function saveProfile(){
+  state.profile={
+    name:el.pName.value.trim(),
+    dob:el.pDob.value,
+    blood:el.pBlood.value,
+    phone:el.pPhone.value.trim(),
+    allergy:el.pAllergy.value.trim(),
+    conditions:el.pConditions.value.trim(),
+    photo:state.profile.photo||""
+  };
+
+  if(saveData()){
+    el.pStatus.textContent="Profile saved successfully.";
+    setTimeout(function(){
+      el.pStatus.textContent="";
+    },2000);
+  }
+}
+
+function removePhoto(){
+  state.profile.photo="";
+  if(el.photoInput) el.photoInput.value="";
+  saveData();
+}
+
+function localSearch(){
+  const q=String(el.medQ.value||"").toLowerCase().trim();
+
+  if(!q){
+    el.medOut.innerHTML='<div class="box warn">Medicine ka naam enter karo.</div>';
+    return;
+  }
+
+  let key=Object.keys(DB).find(function(k){
+    return k.toLowerCase()===q ||
+      DB[k].aliases.some(function(a){return a.toLowerCase()===q;});
+  });
+
+  if(!key){
+    key=Object.keys(DB).find(function(k){
+      return k.toLowerCase().includes(q) ||
+        DB[k].aliases.some(function(a){return a.toLowerCase().includes(q);});
+    });
+  }
+
+  if(!key){
+    el.medOut.innerHTML='<div class="box warn">Is medicine ka quick-reference result nahi mila. Global Drug Intelligence try karo.</div>';
+    return;
+  }
+
+  const d=DB[key];
+
+  el.medOut.innerHTML=
+    '<div class="record">'+
+    '<h3>💊 '+esc(key)+'</h3>'+
+    '<p>'+esc(d.purpose)+'</p>'+
+    '<h4>Common effects</h4>'+
+    '<ul>'+d.effects.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul>'+
+    '<h4>Warnings</h4>'+
+    '<ul>'+d.warnings.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul>'+
+    '<div class="box bad"><b>Urgent:</b> '+d.urgent.map(esc).join(" • ")+'</div>'+
+    '<div class="actions"><button class="btn primary" onclick="fillMed(\''+
+    esc(key).replace(/'/g,"&#39;")+
+    '\')">Add to My Medicines</button></div>'+
+    '</div>';
+}
+
+function fillMed(name){
+  el.mName.value=name;
+  go("myMeds");
+}
+
+function addMed(){
+  const name=el.mName.value.trim();
+
+  if(!name){
+    alert("Medicine name enter karo.");
+    return;
+  }
+
+  state.meds.push({
+    id:Date.now(),
+    name:name,
+    dose:el.mDose.value.trim(),
+    freq:el.mFreq.value.trim(),
+    times:el.mTimes.value.trim(),
+    notes:el.mNotes.value.trim()
+  });
+
+  el.mName.value="";
+  el.mDose.value="";
+  el.mFreq.value="";
+  el.mTimes.value="";
+  el.mNotes.value="";
+
+  saveData();
+}
+
+function delMed(id){
+  state.meds=state.meds.filter(function(m){
+    return m.id!==id;
+  });
+  saveData();
+}
+
+function addTaken(id,time){
+  const today=new Date().toISOString().slice(0,10);
+  const key=today+"_"+id+"_"+time;
+  state.taken[key]=!state.taken[key];
+  saveData();
+}
+
+function render(){
+  const p=state.profile||{};
+
+  el.pName.value=p.name||"";
+  el.pDob.value=p.dob||"";
+  el.pBlood.value=p.blood||"";
+  el.pPhone.value=p.phone||"";
+  el.pAllergy.value=p.allergy||"";
+  el.pConditions.value=p.conditions||"";
+
+  if(p.photo){
+    el.pPhoto.src=p.photo;
+    el.photoLabel.textContent="Photo selected";
+  }else{
+    el.pPhoto.src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='115' height='115'%3E%3Crect width='115' height='115' rx='18' fill='%23eef7f6'/%3E%3Ctext x='57' y='65' text-anchor='middle' font-size='42'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
+    el.photoLabel.textContent="No photo selected";
+  }
+
+  el.sM.textContent=state.meds.length;
+
+  const allergies=String(p.allergy||"")
+    .split(",")
+    .map(function(x){return x.trim()})
+    .filter(Boolean);
+
+  el.sA.textContent=allergies.length;
+  el.sD.textContent=state.docs.length;
+
+  let total=0;
+  let taken=0;
+  const today=new Date().toISOString().slice(0,10);
+
+  state.meds.forEach(function(m){
+    const times=String(m.times||"")
+      .split(",")
+      .map(function(x){return x.trim()})
+      .filter(Boolean);
+
+    times.forEach(function(t){
+      total++;
+      if(state.taken[today+"_"+m.id+"_"+t]) taken++;
+    });
+  });
+
+  el.sT.textContent=total?Math.round((taken/total)*100)+"%":"0%";
+
+  if(p.name){
+    el.dashMsg.innerHTML="Welcome, <b>"+esc(p.name)+"</b>. Your medical passport is ready.";
+  }else{
+    el.dashMsg.textContent="Add your patient profile to start.";
+  }
+
+  renderMeds();
+  renderInteractions();
+  renderSchedule();
+  renderPassport();
+  renderEmergency();
+}
+
+function renderMeds(){
+  if(!state.meds.length){
+    el.medList.innerHTML='<div class="empty" style="margin-top:10px">No medicines added yet.</div>';
+    return;
+  }
+
+  el.medList.innerHTML=state.meds.map(function(m){
+    return '<div class="record">'+
+      '<div class="recordtop">'+
+      '<div><h3 style="margin:0">💊 '+esc(m.name)+'</h3>'+
+      '<div class="tags">'+
+      (m.dose?'<span class="tag">'+esc(m.dose)+'</span>':"")+
+      (m.freq?'<span class="tag">'+esc(m.freq)+'</span>':"")+
+      '</div></div>'+
+      '<button class="btn danger small" onclick="delMed('+m.id+')">Delete</button>'+
+      '</div>'+
+      (m.times?'<p><b>Times:</b> '+esc(m.times)+'</p>':"")+
+      (m.notes?'<p class="muted">'+esc(m.notes)+'</p>':"")+
+      '</div>';
+  }).join("");
+}
+
+function renderInteractions(){
+  const p=state.profile||{};
+  const allergies=String(p.allergy||"")
+    .split(",")
+    .map(function(x){return x.trim().toLowerCase()})
+    .filter(Boolean);
+
+  let html="";
+
+  if(allergies.length){
+    html+='<div class="box warn"><b>Saved allergies:</b> '+allergies.map(esc).join(", ")+'</div>';
+  }else{
+    html+='<div class="box info">No allergies saved in profile.</div>';
+  }
+
+  if(!state.meds.length){
+    html+='<div class="empty" style="margin-top:10px">Add medicines to review basic safety flags.</div>';
+    el.intOut.innerHTML=html;
+    return;
+  }
+
+  state.meds.forEach(function(m){
+    const n=m.name.toLowerCase();
+    const possible=allergies.some(function(a){
+      return n.includes(a)||a.includes(n);
+    });
+
+    if(possible){
+      html+='<div class="box bad"><b>⚠️ Possible allergy match:</b> '+esc(m.name)+
+        '. Do not take a medicine you may be allergic to without professional advice.</div>';
+    }
+  });
+
+  const names=state.meds.map(function(m){return m.name.toLowerCase()});
+  const nsaids=names.filter(function(n){
+    return ["ibuprofen","aspirin","diclofenac"].some(function(x){return n.includes(x)});
+  });
+
+  if(nsaids.length>1){
+    html+='<div class="box warn"><b>⚠️ NSAID/aspirin flag:</b> multiple medicines in the pain/anti-inflammatory group are saved. Ask a pharmacist or clinician before combining them.</div>';
+  }
+
+  if(!html){
+    html='<div class="box ok">No basic built-in warning detected. This is not a complete interaction checker.</div>';
+  }
+
+  el.intOut.innerHTML=html;
+}
+
+function renderSchedule(){
+  if(!state.meds.length){
+    el.scheduleOut.innerHTML='<div class="empty" style="margin-top:10px">No medicines scheduled.</div>';
+    return;
+  }
+
+  const today=new Date().toISOString().slice(0,10);
+
+  el.scheduleOut.innerHTML=state.meds.map(function(m){
+    const times=String(m.times||"")
+      .split(",")
+      .map(function(x){return x.trim()})
+      .filter(Boolean);
+
+    if(!times.length){
+      return '<div class="record"><b>'+esc(m.name)+'</b><div class="muted">No time entered.</div></div>';
+    }
+
+    return '<div class="record"><h3 style="margin-top:0">'+esc(m.name)+'</h3>'+
+      times.map(function(t){
+        const key=today+"_"+m.id+"_"+t;
+        const done=!!state.taken[key];
+
+        return '<div class="actions">'+
+          '<span class="tag">'+esc(t)+'</span>'+
+          '<button class="btn small '+(done?"primary":"")+'" onclick="addTaken('+m.id+',\''+
+          esc(t).replace(/'/g,"&#39;")+
+          '\')">'+(done?"✓ Taken":"Mark taken")+'</button>'+
+          '</div>';
+      }).join("")+
+      '</div>';
+  }).join("");
+}
+
+function renderPassport(){
+  const p=state.profile||{};
+
+  if(!p.name && !state.meds.length){
+    el.passportOut.innerHTML='<div class="empty">Save your profile and medicines to create your passport.</div>';
+    return;
+  }
+
+  const allergies=String(p.allergy||"")
+    .split(",").map(function(x){return x.trim()}).filter(Boolean);
+
+  el.passportOut.innerHTML=
+    '<div class="record">'+
+    '<h3>👤 '+esc(p.name||"Patient")+'</h3>'+
+    '<table>'+
+    '<tr><th>Date of birth</th><td>'+esc(p.dob||"Not provided")+'</td></tr>'+
+    '<tr><th>Blood group</th><td>'+esc(p.blood||"Not provided")+'</td></tr>'+
+    '<tr><th>Emergency phone</th><td>'+esc(p.phone||"Not provided")+'</td></tr>'+
+    '<tr><th>Allergies</th><td>'+esc(allergies.join(", ")||"None recorded")+'</td></tr>'+
+    '<tr><th>Conditions / notes</th><td>'+esc(p.conditions||"None recorded")+'</td></tr>'+
+    '</table>'+
+    '<h3>Medicines</h3>'+
+    (state.meds.length?
+      '<table><tr><th>Medicine</th><th>Dose</th><th>Frequency</th><th>Times</th></tr>'+
+      state.meds.map(function(m){
+        return '<tr><td>'+esc(m.name)+'</td><td>'+esc(m.dose)+'</td><td>'+esc(m.freq)+'</td><td>'+esc(m.times)+'</td></tr>';
+      }).join("")+'</table>'
+      :
+      '<div class="muted">No medicines recorded.</div>')+
+    '</div>';
+}
+
+function renderEmergency(){
+  const p=state.profile||{};
+  const allergies=String(p.allergy||"")
+    .split(",").map(function(x){return x.trim()}).filter(Boolean);
+
+  el.emergencyOut.innerHTML=
+    '<div class="big">'+esc(p.name||"Patient")+'</div>'+
+    '<p>🩸 Blood group: <b>'+esc(p.blood||"Not provided")+'</b></p>'+
+    '<p>⚠️ Allergies: <b>'+esc(allergies.join(", ")||"None recorded")+'</b></p>'+
+    '<p>💊 Medicines: <b>'+esc(state.meds.map(function(m){return m.name}).join(", ")||"None recorded")+'</b></p>'+
+    '<p>📞 Emergency contact: <b>'+esc(p.phone||"Not provided")+'</b></p>'+
+    '<p>ℹ️ Conditions/notes: '+esc(p.conditions||"None recorded")+'</p>';
+}
+
+async function globalSearch(){
+  const q=el.globalQ.value.trim();
+
+  if(!q){
+    el.globalOut.innerHTML='<div class="box warn">Medicine ka naam enter karo.</div>';
+    return;
+  }
+
+  el.globalOut.innerHTML='<div class="box info">Online drug information search ho rahi hai...</div>';
+
+  try{
+    const url="https://rxnav.nlm.nih.gov/REST/drugs.json?name="+encodeURIComponent(q);
+    const res=await fetch(url);
+
+    if(!res.ok) throw new Error("Network error");
+
+    const data=await res.json();
+    const groups=data.drugGroup && data.drugGroup.conceptGroup;
+
+    if(!groups || !groups.length){
+      el.globalOut.innerHTML='<div class="box warn">RxNorm mein result nahi mila.</div>';
+      return;
+    }
+
+    let rows=[];
+
+    groups.forEach(function(g){
+      (g.conceptProperties||[]).forEach(function(x){
+        rows.push(
+          '<tr><td>'+esc(x.name||"")+'</td>'+
+          '<td>'+esc(x.synonym||"")+'</td>'+
+          '<td>'+esc(x.rxcui||"")+'</td></tr>'
+        );
+      });
+    });
+
+    el.globalOut.innerHTML=
+      '<div class="box ok">RxNorm result mil gaya. Ye identification information hai, prescription nahi.</div>'+
+      '<div style="overflow:auto;margin-top:10px"><table>'+
+      '<tr><th>Name</th><th>Synonym</th><th>RxCUI</th></tr>'+
+      rows.slice(0,20).join("")+
+      '</table></div>';
+
+  }catch(e){
+    el.globalOut.innerHTML=
+      '<div class="box warn">Online search abhi available nahi hai. Internet connection check karo, ya built-in Medicine Search use karo.</div>';
+  }
+}
+
+function addMessage(text,type){
+  const d=document.createElement("div");
+  d.className="bubble "+type;
+  d.textContent=text;
+  el.msgs.appendChild(d);
+  el.msgs.scrollTop=el.msgs.scrollHeight;
+}
+
+function ask(){
+  const q=el.aiQ.value.trim();
+
+  if(!q) return;
+
+  addMessage(q,"user");
+  el.aiQ.value="";
+
+  const low=q.toLowerCase();
+  let answer="Main local safety assistant hoon. Main diagnosis nahi karta.";
+
+  if(low.includes("medicine")||low.includes("drug")||low.includes("dawai")){
+    answer="Aapki saved medicines: "+
+      (state.meds.length?state.meds.map(function(m){return m.name}).join(", "):"koi medicine saved nahi hai.")+
+      " Medicine dose ya treatment change karne se pehle clinician/pharmacist se confirm karein.";
+  }
+
+  if(low.includes("allerg")){
+    answer="Saved allergies: "+
+      (state.profile.allergy||"koi allergy recorded nahi hai.")+
+      ". Agar severe allergy symptoms jaise breathing difficulty ya face/lip swelling ho to emergency medical help lein.";
+  }
+
+  if(low.includes("report")||low.includes("prescription")){
+    answer="Uploaded report ka extracted text Reader section mein analyze kiya ja sakta hai. OCR output ko original document se zaroor verify karein.";
+  }
+
+  setTimeout(function(){
+    addMessage(answer,"ai");
+  },300);
+}
+
+async function analyze(){
+  const text=el.rText.value.trim();
+
+  if(!text){
+    el.rOut.innerHTML='<div class="box warn">Pehle document upload karo ya text paste karo.</div>';
+    return;
+  }
+
+  const low=text.toLowerCase();
+  const found=[];
+
+  Object.keys(DB).forEach(function(k){
+    if(low.includes(k)||DB[k].aliases.some(function(a){return low.includes(a)})){
+      found.push(k);
+    }
+  });
+
+  let html='<div class="box info"><b>Safety review:</b> Extracted text ko original prescription/report se verify karna zaroori hai.</div>';
+
+  if(found.length){
+    html+='<div class="record"><h3>Possible medicine names found</h3><ul>'+
+      found.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+
+      '</ul></div>';
+  }else{
+    html+='<div class="box warn">Built-in medicine list mein koi clear medicine name nahi mila.</div>';
+  }
+
+  if(/\b\d+\s*(mg|mcg|g|ml|tablet|tab|capsule|cap)\b/i.test(text)){
+    html+='<div class="box warn"><b>Dose/strength detected:</b> Please manually verify every number and unit against the original.</div>';
+  }
+
+  el.rOut.innerHTML=html;
+
+  state.docs.push({
+    id:Date.now(),
+    name:"Medical document",
+    text:text.slice(0,10000),
+    date:new Date().toISOString()
+  });
+
+  saveData();
+}
+
+function clearReport(){
+  el.file.value="";
+  el.rText.value="";
+  el.rOut.innerHTML="";
+  el.rStatus.textContent="No document selected.";
+  el.prog.style.width="0%";
+}
+
+async function readFile(file){
+  if(!file) return;
+
+  el.rStatus.textContent="Reading "+file.name+"...";
+  el.prog.style.width="10%";
+
+  try{
+    if(file.type==="text/plain" || file.name.toLowerCase().endsWith(".txt")){
+      el.rText.value=await file.text();
+      el.prog.style.width="100%";
+      el.rStatus.textContent="TXT read successfully.";
+      return;
+    }
+
+    if(file.type==="application/pdf" || file.name.toLowerCase().endsWith(".pdf")){
+      if(typeof pdfjsLib==="undefined"){
+        throw new Error("PDF library unavailable");
+      }
+
+      const buffer=await file.arrayBuffer();
+      const pdf=await pdfjsLib.getDocument({data:buffer}).promise;
+      let text="";
+
+      for(let i=1;i<=pdf.numPages;i++){
+        const page=await pdf.getPage(i);
+        const content=await page.getTextContent();
+
+        text+=content.items.map(function(item){
+          return item.str;
+        }).join(" ")+"\n";
+
+        el.prog.style.width=Math.round((i/pdf.numPages)*100)+"%";
+      }
+
+      el.rText.value=text.trim();
+
+      if(!text.trim()){
+        el.rStatus.textContent="PDF mein selectable text nahi mila. Scanned PDF ke liye OCR support limited hai.";
+      }else{
+        el.rStatus.textContent="PDF text extracted successfully.";
+      }
+
+      return;
+    }
+
+    if(file.type.startsWith("image/")){
+      if(typeof Tesseract==="undefined"){
+        throw new Error("OCR library unavailable");
+      }
+
+      el.rStatus.textContent="Image OCR chal raha hai...";
+      el.prog.style.width="15%";
+
+      const result=await Tesseract.recognize(
+        file,
+        "eng",
+        {
+          logger:function(info){
+            if(info.status==="recognizing text" && info.progress){
+              el.prog.style.width=Math.round(info.progress*100)+"%";
+            }
+          }
+        }
+      );
+
+      el.rText.value=(result.data.text||"").trim();
+      el.prog.style.width="100%";
+      el.rStatus.textContent="Image OCR complete. Text verify karein.";
+      return;
+    }
+
+    throw new Error("Unsupported file");
+
+  }catch(e){
+    el.rStatus.textContent="Document read nahi ho paya.";
+    el.rOut.innerHTML='<div class="box bad">File read karte waqt problem hui. TXT ya clear image try karo.</div>';
+    el.prog.style.width="0%";
+  }
+}
+
+function exportData(){
+  const blob=new Blob(
+    [JSON.stringify(state,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="medicine-passport-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function wipe(){
+  if(!confirm("Kya aap sach mein saara local data delete karna chahte hain?")) return;
+
+  localStorage.removeItem(KEY);
+  localStorage.removeItem("mpai_final_v1");
+  state=defaultState();
+  render();
+  clearReport();
+  alert("Saara local data delete ho gaya.");
+}
+
+function importBackup(file){
+  if(!file) return;
+
+  const reader=new FileReader();
+
+  reader.onload=function(){
+    try{
+      const data=JSON.parse(reader.result);
+
+      if(!data || typeof data!=="object"){
+        throw new Error("Invalid backup");
+      }
+
+      state={
+        profile:data.profile||{},
+        meds:Array.isArray(data.meds)?data.meds:[],
+        docs:Array.isArray(data.docs)?data.docs:[],
+        taken:data.taken||{}
+      };
+
+      saveData();
+      alert("Backup successfully imported.");
+    }catch(e){
+      alert("Backup file valid JSON nahi hai.");
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+function printSection(id,title){
+  const content=document.getElementById(id);
+  if(!content) return;
+
+  const w=window.open("","_blank");
+
+  if(!w){
+    alert("Pop-up blocked hai. Browser mein pop-up allow karo.");
+    return;
+  }
+
+  w.document.write(
+    "<!doctype html><html><head><title>"+
+    esc(title)+
+    "</title><style>body{font-family:Arial;padding:25px;color:#102a2a}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ccc;padding:8px;text-align:left}.emergency{padding:20px;background:#1d2939;color:white;border-radius:12px}</style></head><body>"+
+    content.innerHTML+
+    "</body></html>"
+  );
+
+  w.document.close();
+
+  setTimeout(function(){
+    w.print();
+  },500);
+}
+
+el.photoInput.addEventListener("change",function(e){
+  const file=e.target.files &if(!file)return;
+el.rStatus.textContent="Reading "+file.name+"...";
+el.prog.style.width="5%";
+
+try{
+  if(file.type==="text/plain" || /\.txt$/i.test(file.name)){
+    el.rText.value=await file.text();
+    el.prog.style.width="100%";
+    el.rStatus.textContent="Text loaded.";
+    return;
+  }
+
+  if(file.type==="application/pdf" || /\.pdf$/i.test(file.name)){
+    const data=await file.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data}).promise;
+    let text="";
+
+    for(let i=1;i<=pdf.numPages;i++){
+      const page=await pdf.getPage(i);
+      const content=await page.getTextContent();
+      text+=content.items.map(x=>x.str).join(" ")+"\n";
+      el.prog.style.width=Math.round(i/pdf.numPages*100)+"%";
+    }
+
+    el.rText.value=text.trim();
+    el.rStatus.textContent="PDF text extracted. Please verify against the original.";
+    return;
+  }
+
+  if(file.type.startsWith("image/")){
+    el.rStatus.textContent="Running OCR...";
+    const result=await Tesseract.recognize(file,"eng",{
+      logger:m=>{
+        if(m.status==="recognizing text"){
+          el.prog.style.width=Math.round((m.progress||0)*100)+"%";
+        }
+      }
+    });
+
+    el.rText.value=(result.data.text||"").trim();
+    el.prog.style.width="100%";
+    el.rStatus.textContent="OCR complete. Please verify every dose.";
+    return;
+  }
+
+  el.rStatus.textContent="Unsupported file type.";
+}catch(err){
+  console.error(err);
+  el.rStatus.textContent="Could not read this file.";
+  alert("Could not read the selected document.");
+}
+});
+
+el.importInput.addEventListener("change",async function(e){
+  const file=e.target.files && e.target.files[0];
+  if(!file)return;
+
+  try{
+    const imported=JSON.parse(await file.text());
+
+    if(!imported || typeof imported!=="object"){
+      throw new Error("Invalid backup");
+    }
+
+    state=imported;
+    state.profile=state.profile||{};
+    state.meds=Array.isArray(state.meds)?state.meds:[];
+    state.docs=Array.isArray(state.docs)?state.docs:[];
+    state.taken=state.taken||{};
+
+    save();
+    alert("Backup imported successfully.");
+  }catch(err){
+    alert("Invalid backup file.");
+  }
+
+  e.target.value="";
+});
+
+document.querySelectorAll("[data-go]").forEach(btn=>{
+  btn.addEventListener("click",()=>go(btn.dataset.go,btn));
+});
+
+document.querySelectorAll("[data-action]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const a=btn.dataset.action;
+
+    if(a==="theme")theme();
+    if(a==="saveProfile")saveProfile();
+    if(a==="removePhoto")removePhoto();
+    if(a==="localSearch")localSearch();
+    if(a==="globalSearch")globalSearch();
+    if(a==="addMed")addMed();
+    if(a==="ask")ask();
+    if(a==="analyze")analyze();
+    if(a==="clearReport")clearReport();
+    if(a==="exportData")exportData();
+    if(a==="wipe")wipe();
+  });
+});
+
+document.querySelectorAll("[data-print]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const parts=btn.dataset.print.split("|");
+    printSection(parts[0],parts[1]);
+  });
+});
+
+el.medQ.addEventListener("keydown",e=>{
+  if(e.key==="Enter")localSearch();
+});
+
+el.globalQ.addEventListener("keydown",e=>{
+  if(e.key==="Enter")globalSearch();
+});
+
+el.aiQ.addEventListener("keydown",e=>{
+  if(e.key==="Enter")ask();
+});
+
+function saveProfile(){
+  state.profile={
+    ...state.profile,
+    name:el.pName.value.trim(),
+    dob:el.pDob.value,
+    blood:el.pBlood.value,
+    phone:el.pPhone.value.trim(),
+    allergies:el.pAllergy.value.trim(),
+    conditions:el.pConditions.value.trim()
+  };
+
+  if(save()){
+    el.pStatus.textContent="Profile saved.";
+    setTimeout(()=>el.pStatus.textContent="",2500);
+  }
+}
+
+function removePhoto(){
+  state.profile.photo="";
+  save();
+  el.photoInput.value="";
+}
+
+async function handlePhoto(file){
+  if(!file)return;
+
+  if(file.size>2500000){
+    alert("Please choose a smaller photo.");
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=()=>{
+    state.profile.photo=reader.result;
+    save();
+  };
+
+  reader.readAsDataURL(file);
+}
+
+el.photoInput.addEventListener("change",function(e){
+  const file=e.target.files && e.target.files[0];
+  handlePhoto(file);
+});
+
+function localSearch(){
+  const q=el.medQ.value.trim().toLowerCase();
+
+  if(!q){
+    el.medOut.innerHTML='<div class="empty">Enter a medicine name.</div>';
+    return;
+  }
+
+  const key=Object.keys(DB).find(k=>{
+    return k===q || DB[k].aliases.some(a=>a.toLowerCase()===q);
+  });
+
+  if(!key){
+    el.medOut.innerHTML=
+      '<div class="box warn">No local entry found. Try the Global Drug Intelligence search for a broader lookup.</div>';
+    return;
+  }
+
+  const d=DB[key];
+
+  el.medOut.innerHTML=`
+    <div class="record">
+      <div class="recordtop">
+        <div>
+          <h3 style="margin:0">${esc(key)}</h3>
+          <div class="muted">${d.aliases.length?esc(d.aliases.join(", ")):""}</div>
+        </div>
+      </div>
+      <div class="box info"><b>Purpose:</b> ${esc(d.purpose)}</div>
+      <div class="box"><b>Common effects:</b><br>${d.effects.map(x=>"• "+esc(x)).join("<br>")}</div>
+      <div class="box warn"><b>Warnings:</b><br>${d.warnings.map(x=>"• "+esc(x)).join("<br>")}</div>
+      <div class="box bad"><b>Urgent attention:</b><br>${d.urgent.map(x=>"• "+esc(x)).join("<br>")}</div>
+    </div>`;
+}
+
+function addMed(){
+  const name=el.mName.value.trim();
+
+  if(!name){
+    alert("Enter a medicine name.");
+    return;
+  }
+
+  state.meds.push({
+    id:Date.now().toString(),
+    name,
+    dose:el.mDose.value.trim(),
+    freq:el.mFreq.value.trim(),
+    times:el.mTimes.value.trim(),
+    notes:el.mNotes.value.trim()
+  });
+
+  el.mName.value="";
+  el.mDose.value="";
+  el.mFreq.value="";
+  el.mTimes.value="";
+  el.mNotes.value="";
+
+  save();
+}
+
+function deleteMed(id){
+  state.meds=state.meds.filter(m=>m.id!==id);
+  save();
+}
+
+function markTaken(id,time){
+  const key=new Date().toISOString().slice(0,10)+"_"+id+"_"+time;
+  state.taken[key]=!state.taken[key];
+  save();
+}
+
+function renderMeds(){
+  if(!state.meds.length){
+    el.medList.innerHTML='<div class="empty" style="margin-top:10px">No medicines added yet.</div>';
+    return;
+  }
+
+  el.medList.innerHTML=state.meds.map(m=>`
+    <div class="record">
+      <div class="recordtop">
+        <div>
+          <b>${esc(m.name)}</b>
+          <div class="tags">
+            ${m.dose?`<span class="tag">${esc(m.dose)}</span>`:""}
+            ${m.freq?`<span class="tag">${esc(m.freq)}</span>`:""}
+          </div>
+        </div>
+        <button class="btn danger small" onclick="deleteMed('${esc(m.id)}')">Delete</button>
+      </div>
+      ${m.times?`<div class="muted" style="margin-top:7px">Times: ${esc(m.times)}</div>`:""}
+      ${m.notes?`<div class="box info">${esc(m.notes)}</div>`:""}
+    </div>
+  `).join("");
+}
+
+function renderSchedule(){
+  if(!state.meds.length){
+    el.scheduleOut.innerHTML='<div class="empty">Add medicines to create today\'s schedule.</div>';
+    return;
+  }
+
+  let rows=[];
+
+  state.meds.forEach(m=>{
+    const times=m.times.split(",").map(x=>x.trim()).filter(Boolean);
+
+    if(times.length){
+      times.forEach(t=>rows.push({m,time:t}));
+    }else{
+      rows.push({m,time:"Scheduled"});
+    }
+  });
+
+  rows.sort((a,b)=>a.time.localeCompare(b.time));
+
+  const today=new Date().toISOString().slice(0,10);
+
+  el.scheduleOut.innerHTML=rows.map(r=>{
+    const key=today+"_"+r.m.id+"_"+r.time;
+    const done=!!state.taken[key];
+
+    return `
+      <div class="record">
+        <div class="recordtop">
+          <div>
+            <b>${esc(r.m.name)}</b>
+            <div class="muted">${esc(r.time)} ${r.m.dose?"• "+esc(r.m.dose):""}</div>
+          </div>
+          <button class="btn ${done?"primary":""} small"
+            onclick="markTaken('${esc(r.m.id)}','${esc(r.time)}')">
+            ${done?"✓ Taken":"Mark taken"}
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function renderInteractions(){
+  const allergies=(state.profile.allergies||"")
+    .split(",").map(x=>x.trim().toLowerCase()).filter(Boolean);
+
+  if(!state.meds.length){
+    el.intOut='<div class="empty">Add medicines to check basic allergy warnings.</div>';
+    return;
+  }
+
+  let html="";
+
+  state.meds.forEach(m=>{
+    const name=m.name.toLowerCase();
+
+    if(allergies.some(a=>name.includes(a)||a.includes(name))){
+      html+=`<div class="box bad"><b>Possible allergy match:</b> ${esc(m.name)}. Do not take a medicine you may be allergic to; confirm with a clinician/pharmacist.</div>`;
+    }
+
+    if(allergies.some(a=>a.includes("penicillin")) &&
+       ["amoxicillin"].some(x=>name.includes(x))){
+      html+=`<div class="box bad"><b>Important:</b> ${esc(m.name)} is a penicillin-class antibiotic and the saved allergy list mentions penicillin.</div>`;
+    }
+  });
+
+  const names=state.meds.map(m=>m.name.toLowerCase());
+
+  if(names.some(x=>x.includes("ibuprofen")||x.includes("diclofenac")) &&
+     names.some(x=>x.includes("aspirin"))){
+    html+=`<div class="box warn"><b>Possible NSAID/aspirin concern:</b> ibuprofen/diclofenac and aspirin can increase bleeding or stomach-related risks in some situations. Ask a clinician or pharmacist before combining them.</div>`;
+  }
+
+  if(!html){
+    html='<div class="box ok">No basic warning was detected from the saved information. This is not a complete interaction checker.</div>';
+  }
+
+  el.intOut.innerHTML=html;
+}
+
+function analyze(){
+  const text=el.rText.value.trim();
+
+  if(!text){
+    el.rOut.innerHTML='<div class="box warn">No text to analyze.</div>';
+    return;
+  }
+
+  const found=[];
+
+  Object.keys(DB).forEach(k=>{
+    if(text.toLowerCase().includes(k))found.push(k);
+    DB[k].aliases.forEach(a=>{
+      if(text.toLowerCase().includes(a.toLowerCase())&&!found.includes(k)){
+        found.push(k);
+      }
+    });
+  });
+
+  let html=`<div class="box info"><b>Reader result:</b> Extracted text has been reviewed for known medicine names in the local database. Always verify against the original document.</div>`;
+
+  if(found.length){
+    html+=`<div class="record"><b>Recognized medicines:</b><div class="tags" style="margin-top:8px">
+      ${found.map(x=>`<span class="tag">${esc(x)}</span>`).join("")}
+    </div></div>`;
+  }else{
+    html+=`<div class="box warn">No medicines from the local database were recognized.</div>`;
+  }
+
+  el.rOut.innerHTML=html;
+}
+
+function clearReport(){
+  el.file.value="";
+  el.rText.value="";
+  el.rOut.innerHTML="";
+  el.prog.style.width="0";
+  el.rStatus.textContent="No document selected.";
+}
+
+function addMessage(text,type){
+  const div=document.createElement("div");
+  div.className="bubble "+type;
+  div.textContent=text;
+  el.msgs.appendChild(div);
+  el.msgs.scrollTop=el.msgs.scrollHeight;
+}
+
+function ask(){
+  const q=el.aiQ.value.trim();
+
+  if(!q)return;
+
+  addMessage(q,"user");
+  el.aiQ.value="";
+
+  const low=q.toLowerCase();
+  let answer="I can help explain the medicines saved in this app, basic warnings, and report text. I cannot diagnose or replace a doctor.";
+
+  const matched=state.meds.find(m=>low.includes(m.name.toLowerCase()));
+
+  if(matched){
+    const key=Object.keys(DB).find(k=>
+      matched.name.toLowerCase().includes(k) ||
+      k.includes(matched.name.toLowerCase())
+    );
+
+    if(key){
+      answer=`${key}: ${DB[key].purpose} Common effects include ${DB[key].effects.join(", ")}. Warnings: ${DB[key].warnings.join("; ")}. This is educational information, not a treatment recommendation.`;
+    }else{
+      answer=`Your saved medicine is ${matched.name}${matched.dose?" ("+matched.dose+")":""}. For medicine-specific advice, confirm the prescription and ask a pharmacist or clinician.`;
+    }
+  }else if(low.includes("allerg")){
+    answer=state.profile.allergies
+      ? `Your saved allergy list is: ${state.profile.allergies}. If you suspect a serious allergic reaction such as breathing difficulty or swelling of the face/lips/tongue, seek emergency care.`
+      : "No allergies are currently saved in the patient profile.";
+  }else if(low.includes("medicine")||low.includes("drug")){
+    answer=state.meds.length
+      ? `You currently have ${state.meds.length} saved medicine${state.meds.length>1?"s":""}: ${state.meds.map(m=>m.name).join(", ")}.`
+      : "No medicines are currently saved.";
+  }
+
+  setTimeout(()=>addMessage(answer,"ai"),250);
+}
+
+async function globalSearch(){
+  const q=el.globalQ.value.trim();
+
+  if(!q){
+    el.globalOut.innerHTML='<div class="empty">Enter a medicine name.</div>';
+    return;
+  }
+
+  el.globalOut.innerHTML='<div class="box info">Searching online drug information...</div>';
+
+  try{
+    const url="https://rxnav.nlm.nih.gov/REST/drugs.json?name="+encodeURIComponent(q);
+    const res=await fetch(url);
+
+    if(!res.ok)throw new Error("Search failed");
+
+    const data=await res.json();
+    const groups=data.drugGroup?.conceptGroup||[];
+    const concepts=groups.flatMap(g=>g.conceptProperties||[]).slice(0,10);
+
+    if(!concepts.length){
+      el.globalOut.innerHTML='<div class="box warn">No RxNorm result found for this search.</div>';
+      return;
+    }
+
+    el.globalOut.innerHTML=`
+      <div class="record">
+        <b>RxNorm matches</b>
+        ${concepts.map(c=>`
+          <div class="record">
+            <b>${esc(c.name||"Unknown")}</b>
+            <div class="muted">RxCUI: ${esc(c.rxcui||"")}</div>
+            <div class="muted">TTY: ${esc(c.tty||"")}</div>
+          </div>
+        `).join("")}
+        <div class="box warn">Online drug information is educational. Check the official prescribing information and consult a qualified healthcare professional for treatment decisions.</div>
+      </div>`;
+  }catch(err){
+    console.error(err);
+    el.globalOut.innerHTML='<div class="box warn">Online lookup failed. Check your internet connection and try again.</div>';
+  }
+}
+
+function renderProfile(){
+  el.pName.value=state.profile.name||"";
+  el.pDob.value=state.profile.dob||"";
+  el.pBlood.value=state.profile.blood||"";
+  el.pPhone.value=state.profile.phone||"";
+  el.pAllergy.value=state.profile.allergies||"";
+  el.pConditions.value=state.profile.conditions||"";
+
+  if(state.profile.photo){
+    el.pPhoto.src=state.profile.photo;
+    el.photoLabel.textContent="Photo selected";
+  }else{
+    el.pPhoto.removeAttribute("src");
+    el.photoLabel.textContent="No photo selected";
+  }
+}
+
+function renderPassport(){
+  const p=state.profile;
+
+  el.passportOut.innerHTML=`
+    <div class="record">
+      <div class="profilehead">
+        ${p.photo?`<img class="photo" src="${p.photo}" alt="Patient photo">`:""}
+        <div>
+          <h3 style="margin:0">${esc(p.name||"Patient")}</h3>
+          <div class="muted">Medical Passport</div>
+        </div>
+      </div>
+      <table>
+        <tr><th>Date of birth</th><td>${esc(p.dob||"Not provided")}</td></tr>
+        <tr><th>Blood group</th><td>${esc(p.blood||"Not provided")}</td></tr>
+        <tr><th>Emergency phone</th><td>${esc(p.phone||"Not provided")}</td></tr>
+        <tr><th>Allergies</th><td>${esc(p.allergies||"None recorded")}</td></tr>
+        <tr><th>Conditions / notes</th><td>${esc(p.conditions||"None recorded")}</td></tr>
+      </table>
+      <h3>Medicines</h3>
+      ${state.meds.length
+        ?state.meds.map(m=>`<div class="record"><b>${esc(m.name)}</b> ${esc(m.dose||"")}<br><span class="muted">${esc(m.freq||"")} ${m.times?"• "+esc(m.times):""}</span></div>`).join("")
+        :'<div class="empty">No medicines recorded.</div>'}
+    </div>`;
+}
+
+function renderEmergency(){
+  const p=state.profile;
+
+  el.emergencyOut.innerHTML=`
+    <div class="big">${esc(p.name||"Patient")}</div>
+    <div style="margin-top:8px">🩸 Blood group: <b>${esc(p.blood||"Not recorded")}</b></div>
+    <div>⚠️ Allergies: <b>${esc(p.allergies||"None recorded")}</b></div>
+    <div>📞 Emergency contact: <b>${esc(p.phone||"Not recorded")}</b></div>
+    <div style="margin-top:10px;font-size:12px;opacity:.85">
+      Carry this card only as a quick reference. In an emergency, contact local emergency services and healthcare professionals.
+    </div>`;
+}
+
+function renderDashboard(){
+  el.sM.textContent=state.meds.length;
+
+  const allergies=(state.profile.allergies||"")
+    .split(",").map(x=>x.trim()).filter(Boolean);
+
+  el.sA.textContent=allergies.length;
+  el.sD.textContent=state.docs.length;
+
+  let total=0,done=0;
+  const today=new Date().toISOString().slice(0,10);
+
+  state.meds.forEach(m=>{
+    const times=m.times.split(",").map(x=>x.trim()).filter(Boolean);
+    times.forEach(t=>{
+      total++;
+      if(state.taken[today+"_"+m.id+"_"+t])done++;
+    });
+  });
+
+  el.sT.textContent=total?Math.round(done/total*100)+"%":"0%";
+
+  el.dashMsg.textContent=state.profile.name
+    ? "Welcome back, "+state.profile.name+". Your saved health information is stored locally in this browser."
+    : "Add your patient profile to start.";
+}
+
+function render(){
+  renderProfile();
+  renderMeds();
+  renderSchedule();
+  renderInteractions();
+  renderPassport();
+  renderEmergency();
+  renderDashboard();
+}
+
+function exportData(){
+  const blob=new Blob(
+    [JSON.stringify(state,null,2)],
+    {type:"application/json"}
+  );
+
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="medicine-passport-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function wipe(){
+  if(!confirm("Delete all Medicine Passport data from this browser?"))return;
+
+  localStorage.removeItem(KEY);
+  state=defaultState();
+  render();
+
+  alert("All local data has been deleted.");
+}
+
+function printSection(id,title){
+  const content=$(id);
+  if(!content)return;
+
+  const w=window.open("","_blank");
+
+  if(!w){
+    alert("Please allow pop-ups to print.");
+    return;
+  }
+
+  w.document.write(`
+    <!doctype html>
+    <html>
+    <head>
+      <title>${esc(title)}</title>
+      <style>
+        body{
+          font-family:Arial,sans-serif;
+          padding:25px;
+          color:#102a2a;
+        }
+        table{width:100%;border-collapse:collapse}
+        th,td{
+          border:1px solid #ccc;
+          padding:8px;
+          text-align:left;
+        }
+        .emergency{
+          padding:20px;
+          border:2px solid #222;
+          border-radius:10px;
+        }
+        .photo{
+          width:115px;
+          height:115px;
+          object-fit:cover;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>${esc(title)}</h1>
+      ${content.innerHTML}
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+
+  setTimeout(()=>{
+    w.print();
+  },500);
+}
+
+function theme(){
+  document.body.dataset.dark=
+    document.body.dataset.dark==="1"?"0":"1";
+
+  if(document.body.dataset.dark==="1"){
+    document.documentElement.style.setProperty("--bg","#101919");
+    document.documentElement.style.setProperty("--card","#172222");
+    document.documentElement.style.setProperty("--text","#edfafa");
+    document.documentElement.style.setProperty("--muted","#a9bbbb");
+    document.documentElement.style.setProperty("--line","#29403f");
+  }else{
+    document.documentElement.style.setProperty("--bg","#f4f8f8");
+    document.documentElement.style.setProperty("--card","#fff");
+    document.documentElement.style.setProperty("--text","#102a2a");
+    document.documentElement.style.setProperty("--muted","#657979");
+    document.documentElement.style.setProperty("--line","#d9e7e5");
+  }
+}
+
+render();
+</script>
+</body>
+</html>
